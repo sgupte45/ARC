@@ -17,7 +17,7 @@ for line in lines:
 
 
 def generate_plan():
-    f = open("test.txt", "")
+    f = open("test.txt", "x")
     f.write(top_plate)
     f.write(generateObject(coordinates[0], "takeoff", 1))
     f.write(generateObject(coordinates[1], "waypoint", 2))
@@ -34,15 +34,15 @@ def generateObject(coordinates, action, id): #CHANGE DOJUMPID FOR EACH THING
     latitude = coordinates[0].replace("'", "")
     longitude = coordinates[1].replace("'", "")
     if(action == "loiter"): #Loiter object; what are the parameters                                                                                            This doJumpId thing has to be iterated for each object we create; param 1 is time, idk what the others
-        return "{\"AMSLAltAboveTerrain\": null,\n\"Altitude\": " + altitude + ",\n\"AltitudeMode\": 1,\n\"autoContinue\": true,\n\"command\": 19, \n\"doJumpId\":" + id + ",\n\"frame\": 3,\n\"params\": [\n30,\n1,\n50,\n1,\n" + latitude +",\n" + longitude +",\n" + altitude + "\n],\n\"type\": \"SimpleItem\"\n},"
+        return "{\"AMSLAltAboveTerrain\": null,\n\"Altitude\": " + str(altitude) + ",\n\"AltitudeMode\": 1,\n\"autoContinue\": true,\n\"command\": 19, \n\"doJumpId\":" + id + ",\n\"frame\": 3,\n\"params\": [\n30,\n1,\n50,\n1,\n" + str(latitude) +",\n" + str(longitude) +",\n" + str(altitude) + "\n],\n\"type\": \"SimpleItem\"\n},"
     elif(action == "waypoint"): #Generic Waypoint
-        return "{\"AMSLAltAboveTerrain\": null,\n\"Altitude\": " + altitude + ",\n\"AltitudeMode\": 1,\n\"autoContinue\": true,\n\"command\": 16, \n\"doJumpId\":" + id + ",\n\"frame\": 3,\n\"params\": [\n0,\n0,\n0,\nnull,\n" + latitude + ",\n" + longitude + ",\n" + altitude + "\n],\n\"type\": \"SimpleItem\"\n},"
+        return "{\"AMSLAltAboveTerrain\": null,\n\"Altitude\": " + str(altitude) + ",\n\"AltitudeMode\": 1,\n\"autoContinue\": true,\n\"command\": 16, \n\"doJumpId\":" + id + ",\n\"frame\": 3,\n\"params\": [\n0,\n0,\n0,\nnull,\n" + str(latitude) + ",\n" + str(longitude) + ",\n" + str(altitude) + "\n],\n\"type\": \"SimpleItem\"\n},"
     elif(action == "takeoff"): # Waypoint when taking off
-        return "{\"AMSLAltAboveTerrain\": null,\n\"Altitude\": " + altitude + ",\n\"AltitudeMode\": 1,\n\"autoContinue\": true,\n\"command\": 22, \n\"doJumpId\":" + id + ",\n\"frame\": 3,\n\"params\": [\n0,\n0,\n0,\nnull,\n" + latitude + ",\n" + longitude + ",\n" + altitude + "\n],\n\"type\": \"SimpleItem\"\n},"
+        return "{\"AMSLAltAboveTerrain\": null,\n\"Altitude\": " + str(altitude) + ",\n\"AltitudeMode\": 1,\n\"autoContinue\": true,\n\"command\": 22, \n\"doJumpId\":" + id + ",\n\"frame\": 3,\n\"params\": [\n0,\n0,\n0,\nnull,\n" + str(latitude) + ",\n" + str(longitude) + ",\n" + str(altitude) + "\n],\n\"type\": \"SimpleItem\"\n},"
     elif(action == "servo"): #Use servo to drop egg or something; change off of placeholder at some point
         return "Placeholder"
     elif (action == "land"):#Last object in .plan file; necessary to land          !!!WE WILL CHANGE THIS!!!
-        return "],\n\"plannedHomePosition\":[\n" + latitude + ",\n" + longitude + ",\n102.72507599995788\n],"
+        return "],\n\"plannedHomePosition\":[\n" + str(latitude) + ",\n" + str(longitude) + ",\n102.72507599995788\n],"
     else:
         return "ERROR: INVALID INPUT"
 
