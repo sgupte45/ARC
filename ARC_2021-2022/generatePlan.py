@@ -22,7 +22,6 @@ def search_home():
 
 home_set = search_home() # Remove apostrophes from this
 
-
 def optimize_path():
     # First, create a set of all possible paths
     # Then , Calculate net distance for each path
@@ -56,7 +55,13 @@ def optimize_path():
     lpath.append(home_set)
     return lpath
 
-def generate_plan(): #Eventually want to automate this
+
+# Variable containing better coordinate list
+fast_path = optimize_path()
+
+
+# Eventually want to automate this
+def generate_plan():
     f = open("test7.plan", "x")
     f.write(top_plate)
     f.write(generateObject(coordinates[0], "takeoff", 1))
@@ -87,7 +92,7 @@ def generateObject(coordinates, action, id): #CHANGE DOJUMPID FOR EACH THING
     else:
         return "ERROR: INVALID INPUT"
 
-print(optimize_path())
+
 
 
 
