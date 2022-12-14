@@ -43,7 +43,7 @@ def optimize_path():
         px2 = float(p[2][0].replace("'", ""))
         py2 = float(p[2][1].replace("'", ""))
         px3 = float(p[3][0].replace("'", ""))
-        py3 = float(p[1][0].replace("'", ""))
+        py3 = float(p[3][1].replace("'", ""))
         distance = math.dist([px0, py0], [px1, py1]) + math.dist([px1, py1], [px2, py2]) + math.dist([px2, py2], [px3, py3])
         if (distance < k) or (k == 0):
             k = distance
@@ -86,7 +86,7 @@ def generateObject(coordinates, action, id): #CHANGE DOJUMPID FOR EACH THING
     else:
         return "ERROR: INVALID INPUT"
 
-
+print(optimize_path())
 
 
 
