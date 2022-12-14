@@ -35,7 +35,7 @@ def optimize_path():
     xy = [[coordinates[1][0], coordinates[1][1]], [coordinates[2][0], coordinates[2][1]], [coordinates[3][0], coordinates[3][1]], [coordinates[4][0], coordinates[4][1]]]
     points = permutations([xy[0], xy[1], xy[2], xy[3]], 4)
     for p in list(points):
-        # is there a way to shorten the following mess
+        # is there a way to shorten the following mess... After some reasearch this is probably the easiest way
         px0 = float(p[0][0].replace("'", ""))
         py0 = float(p[0][1].replace("'", ""))
         px1 = float(p[1][0].replace("'", ""))
@@ -66,8 +66,7 @@ def generate_plan(): #Eventually want to automate this
     f.write(generateObject(coordinates[3], "bottom", 0))
 
 
-#this will generate an mission object type based on the 4th value of the input indices
-
+# This will generate an mission object type based on the 4th value of the input indices
 def generateObject(coordinates, action, id): #CHANGE DOJUMPID FOR EACH THING
     wp_type = coordinates[3] #maybe no remove for this one?
     altitude = coordinates[2].replace("'", "")
