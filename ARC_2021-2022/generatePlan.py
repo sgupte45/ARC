@@ -29,10 +29,12 @@ def optimize_path():
     # Finally, Compare net distance between each thing
     path = [[]]
     k = 0
-    hx = home_set[0]
-    hy = home_set[1]
+    hx = float(home_set[0])
+    hy = float(home_set[1])
     # Next part is a bit sketchy
-    xy = [[coordinates[1][0], coordinates[1][1]], [coordinates[2][0], coordinates[2][1]], [coordinates[3][0], coordinates[3][1]], [coordinates[4][0], coordinates[4][1]]]
+    #xy = [[coordinates[1][0], coordinates[1][1]], [coordinates[2][0], coordinates[2][1]], [coordinates[3][0], coordinates[3][1]], [coordinates[4][0], coordinates[4][1]]]
+    xy = coordinates
+    del xy[0]
     points = permutations([xy[0], xy[1], xy[2], xy[3]], 4)
     for p in list(points):
         # is there a way to shorten the following mess... After some reasearch this is probably the easiest way
@@ -44,14 +46,14 @@ def optimize_path():
         py2 = float(p[2][1].replace("'", ""))
         px3 = float(p[3][0].replace("'", ""))
         py3 = float(p[3][1].replace("'", ""))
-        distance = math.dist([px0, py0], [px1, py1]) + math.dist([px1, py1], [px2, py2]) + math.dist([px2, py2], [px3, py3])
+        distance = math.dist([hx, hy], [px0, py0]) + math.dist([px0, py0], [px1, py1]) + math.dist([px1, py1], [px2, py2]) + math.dist([px2, py2], [px3, py3]) + math.dist([px3, py3], [hx, hy])
         if (distance < k) or (k == 0):
             k = distance
             path = p
     # Changing tuple to list so that it is mutable
     lpath = [path[0], path[1], path[2], path[3]]
-    lpath.insert(0, [hx, hy])
-    lpath.append([hx, hy])
+    lpath.insert(0, home_set)
+    lpath.append(home_set)
     return lpath
 
 def generate_plan(): #Eventually want to automate this
