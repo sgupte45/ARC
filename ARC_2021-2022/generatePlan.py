@@ -5,7 +5,7 @@ import math
 
 top_plate = "{\n\"fileType\": \"Plan\",\n\"geoFence\": {\n\"circles\": [\n],\n\"polygons\": [\n],\n\"version\": 2\n},\n\"groundStation\": \"QGroundControl\",\n\"mission\": {\n\"cruiseSpeed\": 15,\n\"firmwareType\": 12,\n\"globalPlanAltitudeMode\": 1,\n\"hoverSpeed\": 5,\n\"items\": ["
 
-waypoint = open('waypoint_1.txt') #Change to "with"
+waypoint = open('WORK.txt') #Change to "with"
 lines = waypoint.readlines()
 coordinates = [] #for each index, 1 = lat ,2 = long, 3 = alt, 4 = type
 lines.remove('\n') #Removing extraneous lines
@@ -32,8 +32,9 @@ def optimize_path():
     hy = float(home_set[1])
     # Next part is a bit sketchy
     #xy = [[coordinates[1][0], coordinates[1][1]], [coordinates[2][0], coordinates[2][1]], [coordinates[3][0], coordinates[3][1]], [coordinates[4][0], coordinates[4][1]]]
-    xy = coordinates
-    del xy[0]
+    xy = [coordinates[1], coordinates[2], coordinates[3], coordinates[4]]
+
+    #xy = coordinates
     points = permutations([xy[0], xy[1], xy[2], xy[3]], 4)
     for p in list(points):
         # is there a way to shorten the following mess... After some reasearch this is probably the easiest way
@@ -53,6 +54,7 @@ def optimize_path():
     lpath = [path[0], path[1], path[2], path[3]]
     lpath.insert(0, home_set)
     lpath.append(home_set)
+
     return lpath
 
 
@@ -61,16 +63,29 @@ fast_path = optimize_path()
 
 
 # Eventually want to automate this
-def generate_plan():
-    f = open("test7.plan", "x")
+def generate_plan(file):
+    f = open(file, "x")
     f.write(top_plate)
-    f.write(generateObject(coordinates[0], "takeoff", 1))
-    f.write(",")
-    f.write(generateObject(coordinates[1], "waypoint", 2))
-    f.write(",")
-    f.write(generateObject(coordinates[2], "loiter", 3))
-    f.write(",")
-    f.write(generateObject(coordinates[3], "bottom", 0))
+    i = 0
+    for y in list(fast_path):
+        i += 1
+        if y == fast_path[0] and i == 1: # Maybe 1?
+            f.write(generateObject(y, "takeoff", i))
+        elif y[3] == 'A' or y[3] == 'B':
+            f.write(generateObject(y, "waypoint", i))
+        elif y[3] == 'C':
+            f.write(generateObject(y, "loiter", i))
+        elif y[3] == 'H' and i > 1:
+            break
+        f.write(",")
+    f.write(generateObject(fast_path[0], "bottom", 0))
+    #f.write(generateObject(fast_path[0], "takeoff", 1))
+    #f.write(",")
+    #f.write(generateObject(coordinates[1], "waypoint", 2))
+    #f.write(",")
+    #f.write(generateObject(coordinates[2], "loiter", 3))
+    #f.write(",")
+    #f.write(generateObject(coordinates[3], "bottom", 0))
 
 
 # This will generate an mission object type based on the 4th value of the input indices
@@ -92,7 +107,7 @@ def generateObject(coordinates, action, id): #CHANGE DOJUMPID FOR EACH THING
     else:
         return "ERROR: INVALID INPUT"
 
-
+generate_plan("THISWILLWORK.plan")
 
 
 
