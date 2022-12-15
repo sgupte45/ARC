@@ -1,5 +1,4 @@
 import os
-import numpy as np
 from itertools import permutations
 import math
 
@@ -15,6 +14,7 @@ for line in lines:
     split = line.split() #Splits lines by spaces
     coordinates.append([split[0], split[2], split[4], split[5]])
 
+# Finds index of home coordinate
 def search_home():
     for x in coordinates:
         if coordinates[coordinates.index(x)][3] == 'H':
@@ -22,6 +22,7 @@ def search_home():
 
 home_set = search_home() # Remove apostrophes from this
 
+# O(n!) time complexity...  potentially use a different algo.
 def optimize_path():
     # First, create a set of all possible paths
     # Then , Calculate net distance for each path
@@ -31,7 +32,7 @@ def optimize_path():
     hx = float(home_set[0])
     hy = float(home_set[1])
     # Next part is a bit sketchy
-    #xy = [[coordinates[1][0], coordinates[1][1]], [coordinates[2][0], coordinates[2][1]], [coordinates[3][0], coordinates[3][1]], [coordinates[4][0], coordinates[4][1]]]
+    # xy = [[coordinates[1][0], coordinates[1][1]], [coordinates[2][0], coordinates[2][1]], [coordinates[3][0], coordinates[3][1]], [coordinates[4][0], coordinates[4][1]]]
     xy = [coordinates[1], coordinates[2], coordinates[3], coordinates[4]]
 
     #xy = coordinates
@@ -46,6 +47,7 @@ def optimize_path():
         py2 = float(p[2][1].replace("'", ""))
         px3 = float(p[3][0].replace("'", ""))
         py3 = float(p[3][1].replace("'", ""))
+        # Comparing distances
         distance = math.dist([hx, hy], [px0, py0]) + math.dist([px0, py0], [px1, py1]) + math.dist([px1, py1], [px2, py2]) + math.dist([px2, py2], [px3, py3]) + math.dist([px3, py3], [hx, hy])
         if (distance < k) or (k == 0):
             k = distance
@@ -62,7 +64,7 @@ def optimize_path():
 fast_path = optimize_path()
 
 
-# Eventually want to automate this
+# Loop through each waypoint, add waypoint text file based on type
 def generate_plan(file):
     f = open(file, "x")
     f.write(top_plate)
@@ -79,13 +81,6 @@ def generate_plan(file):
             break
         f.write(",")
     f.write(generateObject(fast_path[0], "bottom", 0))
-    #f.write(generateObject(fast_path[0], "takeoff", 1))
-    #f.write(",")
-    #f.write(generateObject(coordinates[1], "waypoint", 2))
-    #f.write(",")
-    #f.write(generateObject(coordinates[2], "loiter", 3))
-    #f.write(",")
-    #f.write(generateObject(coordinates[3], "bottom", 0))
 
 
 # This will generate an mission object type based on the 4th value of the input indices
